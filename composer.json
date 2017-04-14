@@ -1,5 +1,5 @@
 {
-    "name": "verschoof/transip-api",
+    "name": "dopee/transip-api",
     "type": "library",
     "description": "TransIp API client",
     "keywords": ["transip", "api"],
@@ -9,6 +9,11 @@
             "name": "Mitchel Verschoof",
             "email": "mitchel@verschoof.net",
             "homepage": "http://www.verschoof.net"
+        },
+        {
+            "name": "Sander Krul",
+            "email": "sander@dope-e.nl",
+            "homepage": "https://www.netvlies.nl"
         },
         {
             "name": "TransIp API",

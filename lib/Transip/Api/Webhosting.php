@@ -9,24 +9,21 @@ namespace Transip\Api;
  * @class   WebhostingService
  * @author  TransIP (support@transip.nl)
  * @author  Mitchel Verschoof (mitchel@verschoof.net)
- * @version 20131025 10:01
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Webhosting extends SoapClientAbstract
 {
     const CANCELLATIONTIME_END         = 'end';
     const CANCELLATIONTIME_IMMEDIATELY = 'immediately';
 
-    /** The SOAP service that corresponds with this class. */
-    protected $service = 'WebhostingService';
-
-
     /**
      * Gets the singleton SoapClient which is used to connect to the TransIP Api.
      *
-     * @param  mixed $parameters Parameters.
-     * @return \SoapClient               The SoapClient object to which we can connect to the TransIP API
+     * @param  array $parameters Parameters.
+     * @return \SoapClient The SoapClient object to which we can connect to the TransIP API
      */
-    public function getSoapClient($parameters = array())
+    public function getSoapClient(array $parameters = array())
     {
         $classMap = array(
             'WebhostingPackage' => 'Transip\\Model\\WebhostingPackage',
@@ -37,6 +34,8 @@ class Webhosting extends SoapClientAbstract
             'MailForward'       => 'Transip\\Model\\MailForward',
             'SubDomain'         => 'Transip\\Model\\SubDomain',
         );
+
+        $this->service = 'WebhostingService';
 
         return $this->soapClient($classMap, $parameters);
     }
@@ -82,7 +81,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                           $domainName        The domain name to order the webhosting for. Must be owned by this user
      * @param \Transip\Model\WebhostingPackage $webhostingPackage The webhosting Package to order, one of the packages returned by Transip_WebhostingService::getAvailablePackages()
-     * @throws ApiException on error
+     * @throws \Transip\Exception\\Transip\Exception\ApiException on error
      */
     public function order($domainName, \Transip\Model\WebhostingPackage $webhostingPackage)
     {
@@ -95,6 +94,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string $domainName Domain to get upgrades for. Must be owned by the current user.
      * @return \Transip\Model\WebhostingPackage[] Available packages to which the domain name can be upgraded to.
+     * @throws \Transip\Exception\ApiException Throwns an Exception ig the domain is not found in the requester account
      */
     public function getAvailableUpgrades($domainName)
     {
@@ -106,6 +106,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string $domainName           The domain to upgrade webhosting for. Must be owned by the current user.
      * @param string $newWebhostingPackage The new webhosting package, must be one of the packages returned getAvailableUpgrades() for the given domain name
+     * @throws \Transip\Exception\ApiException Throws an exception when the domain name does not belong to the requester (or is not found) or the package can't be upgraded
      */
     public function upgrade($domainName, $newWebhostingPackage)
     {
@@ -117,6 +118,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string $domainName The domain to cancel the webhosting for
      * @param string $endTime    the time to cancel the domain (WebhostingService::CANCELLATIONTIME_END (end of contract) or WebhostingService::CANCELLATIONTIME_IMMEDIATELY (as soon as possible))
+     * @throws \Transip\Exception\ApiException Throws an exception when the domain name does not belong to the requester (or is not found).
      */
     public function cancel($domainName, $endTime)
     {
@@ -128,6 +130,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string $domainName  Domain to set webhosting FTP password for
      * @param string $newPassword The new FTP password for the webhosting package
+     * @throws \Transip\Exception\ApiException When the new password is empty
      */
     public function setFtpPassword($domainName, $newPassword)
     {
@@ -139,6 +142,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                 $domainName the domain name of the webhosting package to create cronjob for
      * @param \Transip\Model\Cronjob $cronjob    the cronjob to create. All fields must be valid.
+     * @throws \Transip\Exception\ApiException When the new URL is either invalid or the URL is not a URL linking to the domain the CronJob is for.
      */
     public function createCronjob($domainName, \Transip\Model\Cronjob $cronjob)
     {
@@ -151,6 +155,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                 $domainName the domain name of the webhosting package to delete a cronjob
      * @param \Transip\Model\Cronjob $cronjob    Cronjob the cronjob to delete. Be aware that all matching cronjobs will be removed.
+     * @throws \Transip\Exception\ApiException When the CronJob that needs to be deleted is not found.
      */
     public function deleteCronjob($domainName, \Transip\Model\Cronjob $cronjob)
     {
@@ -174,6 +179,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                 $domainName the domain name of the webhosting package to modify the mailbox for
      * @param \Transip\Model\MailBox $mailBox    the MailBox to modify
+     * @throws \Transip\Exception\ApiException When the MailBox that needs to be modified is not found.
      */
     public function modifyMailBox($domainName, \Transip\Model\MailBox $mailBox)
     {
@@ -186,6 +192,7 @@ class Webhosting extends SoapClientAbstract
      * @param string                 $domainName  the domain name of the webhosting package to set the mailbox password for
      * @param \Transip\Model\MailBox $mailBox     the MailBox to set the password for
      * @param string                 $newPassword the new password for the MailBox, cannot be empty.
+     * @throws \Transip\Exception\ApiException When the MailBox that needs to be modified is not found.
      */
     public function setMailBoxPassword($domainName, \Transip\Model\MailBox $mailBox, $newPassword)
     {
@@ -197,6 +204,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                 $domainName the domain name of the webhosting package to remove the MailBox from
      * @param \Transip\Model\MailBox $mailBox    the mailbox object to remove
+     * @throws \Transip\Exception\ApiException When the MailBox that needs to be deleted is not found.
      */
     public function deleteMailBox($domainName, \Transip\Model\MailBox $mailBox)
     {
@@ -219,6 +227,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                     $domainName  the domain name of the webhosting package to modify the MailForward from
      * @param \Transip\Model\MailForward $mailForward the MailForward to modify
+     * @throws \Transip\Exception\ApiException When the MailForward that needs to be modified is not found.
      */
     public function modifyMailForward($domainName, \Transip\Model\MailForward $mailForward)
     {
@@ -274,7 +283,8 @@ class Webhosting extends SoapClientAbstract
      * Deletes a Db object
      *
      * @param string            $domainName the domain name of the webhosting package to delete the Db for
-     * @param \Transip\Model\Db $db         Db object to remove
+     * @param \Transip\Model\Db $db            Db object to remove
+     * @throws \Transip\Exception\\Transip\Exception\ApiException When the Database that needs to be deleted is not found.
      */
     public function deleteDatabase($domainName, $db)
     {
@@ -297,6 +307,7 @@ class Webhosting extends SoapClientAbstract
      *
      * @param string                   $domainName the domain name of the webhosting package to delete the SubDomain for
      * @param \Transip\Model\SubDomain $subDomain  SubDomain object to delete
+     * @throws \Transip\Exception\ApiException When the Subdomain that needs to be deleted is not found.
      */
     public function deleteSubdomain($domainName, \Transip\Model\SubDomain $subDomain)
     {

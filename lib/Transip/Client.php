@@ -2,12 +2,18 @@
 
 namespace Transip;
 
+use Transip\Exception\ApiException;
 use Transip\Exception\InvalidArgumentException;
 
 /**
  * Class Client
  *
  * @package Transip
+ * @class   Client
+ * @author  TransIP (support@transip.nl)
+ * @author  Mitchel Verschoof (mitchel@verschoof.net)
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Client
 {
@@ -24,7 +30,7 @@ class Client
     /**
      * Available modes for the API
      */
-    static public $availableModes = array(
+    public static $availableModes = array(
         'readonly',
         'readwrite'
     );
@@ -145,10 +151,10 @@ class Client
      */
     public function setMode($mode)
     {
-        if (in_array($mode, $this->availableModes)) {
+        if (in_array($mode, self::$availableModes, true)) {
             $this->mode = $mode;
         }
 
-        throw new \Exception("$mode is not a available mode for this API.");
+        throw new ApiException("$mode is not an available mode for this API.");
     }
 }

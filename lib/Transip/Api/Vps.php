@@ -9,14 +9,13 @@ namespace Transip\Api;
  * @class   VpsService
  * @author  TransIP (support@transip.nl)
  * @author  Peter Steenbergen (psteenbergen@gmail.com)
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Vps extends SoapClientAbstract
 {
     const CANCELLATIONTIME_END = 'end';
     const CANCELLATIONTIME_IMMEDIATELY = 'immediately';
-
-    /** The SOAP service that corresponds with this class. */
-    protected $service = 'VpsService';
 
     /**
      * Gets the singleton SoapClient which is used to connect to the TransIP Api.
@@ -34,6 +33,8 @@ class Vps extends SoapClientAbstract
             'OperatingSystem' => 'Transip\\Model\\OperatingSystem',
         );
 
+        $this->service = 'VpsService';
+
         return $this->soapClient($classMap, $parameters);
     }
 
@@ -50,7 +51,7 @@ class Vps extends SoapClientAbstract
     /**
      * Get available VPS addons
      *
-     * @return |Transip\Model\Product[] List of available VPS Products
+     * @return \Transip\Model\Product[] List of available VPS Products
      */
     public function getAvailableAddons()
     {
@@ -61,7 +62,7 @@ class Vps extends SoapClientAbstract
      * Get all the Active Addons for Vps
      *
      * @param string $vpsName The name of the VPS
-     * @return |Transip\Model\Product[] List of available VPS Products
+     * @return \Transip\Model\Product[] List of available VPS Products
      */
     public function getActiveAddonsForVps($vpsName)
     {
@@ -72,7 +73,7 @@ class Vps extends SoapClientAbstract
      * Get available VPS upgrades for a specific Vps
      *
      * @param string $vpsName The name of the VPS
-     * @return |Transip\Model\Product[] List of available VPS Products
+     * @return \Transip\Model\Product[] List of available VPS Products
      */
     public function getAvailableUpgrades($vpsName)
     {
@@ -83,7 +84,7 @@ class Vps extends SoapClientAbstract
      * Get available Addons for Vps
      *
      * @param string $vpsName The name of the VPS
-     * @return |Transip\Model\Product[] List of available VPS Products
+     * @return \Transip\Model\Product[] List of available VPS Products
      */
     public function getAvailableAddonsForVps($vpsName)
     {
@@ -94,7 +95,7 @@ class Vps extends SoapClientAbstract
      * Get cancellable addons for specific Vps
      *
      * @param string $vpsName The name of the Vps
-     * @return |Transip\Model\Product[] List of available Vps Products
+     * @return \Transip\Model\Product[] List of available Vps Products
      */
     public function getCancellableAddonsForVps($vpsName)
     {
@@ -108,7 +109,7 @@ class Vps extends SoapClientAbstract
      * @param string[] $addons array with additional addons
      * @param string $operatingSystemName The name of the operatingSystem to install
      * @param string $hostname The name for the host
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function orderVps($productName, $addons, $operatingSystemName, $hostname)
     {
@@ -116,11 +117,23 @@ class Vps extends SoapClientAbstract
     }
 
     /**
+     * Clone a VPS
+     *
+     * @param string $vpsName The vps name
+     * @throws \Transip\Exception\ApiException
+     */
+    public function cloneVps($vpsName)
+    {
+        return  $this->getSoapClient(array_merge(array($vpsName), array('__method' => 'cloneVps')))->cloneVps($vpsName);
+    }
+
+
+    /**
      * Order addons to a VPS
      *
      * @param string $vpsName The name of the VPS
      * @param string[] $addons Array with Addons
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function orderAddon($vpsName, $addons)
     {
@@ -130,7 +143,7 @@ class Vps extends SoapClientAbstract
     /**
      * Order a private Network
      *
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function orderPrivateNetwork()
     {
@@ -142,7 +155,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The name of the VPS
      * @param string $upgradeToProductName The name of the product to upgrade to
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function upgradeVps($vpsName, $upgradeToProductName)
     {
@@ -154,7 +167,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The vps to cancel
      * @param string $endTime The time to cancel the vps (VpsService::CANCELLATIONTIME_END (end of contract)
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function cancelVps($vpsName, $endTime)
     {
@@ -166,7 +179,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The vps to cancel
      * @param string $addonName name of the addon
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function cancelAddon($vpsName, $addonName)
     {
@@ -178,7 +191,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $privateNetworkName the name of the private network to cancel
      * @param string $endTime The time to cancel the vps (VpsService::CANCELLATIONTIME_END (end of contract)
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function cancelPrivateNetwork($privateNetworkName, $endTime)
     {
@@ -189,7 +202,7 @@ class Vps extends SoapClientAbstract
      * Get Private networks for a specific vps
      *
      * @param string $vpsName The name of the VPS
-     * @return |Transip\Model\PrivateNetwork[] $privateNetworks Array of PrivateNetwork objects
+     * @return \Transip\Model\PrivateNetwork[] $privateNetworks Array of PrivateNetwork objects
      */
     public function getPrivateNetworksByVps($vpsName)
     {
@@ -199,7 +212,7 @@ class Vps extends SoapClientAbstract
     /**
      * Get all Private networks in your account
      *
-     * @return |Transip\Model\PrivateNetwork[] $privateNetworks Array of PrivateNetwork objects
+     * @return \Transip\Model\PrivateNetwork[] $privateNetworks Array of PrivateNetwork objects
      */
     public function getAllPrivateNetworks()
     {
@@ -229,24 +242,11 @@ class Vps extends SoapClientAbstract
     }
 
     /**
-     * Get total amount of traffic used this month
-     *
-     * @param string $vpsName The name of the VPS
-     * @deprecated replaced by getTrafficInformationForVps()
-     * @throws ApiException on error
-     * @return float $amountOfTraffic Amount of traffic in Bytes
-     */
-    public function getAmountOfTrafficUsed($vpsName)
-    {
-        return $this->getSoapClient(array_merge(array($vpsName), array('__method' => 'getAmountOfTrafficUsed')))->getAmountOfTrafficUsed($vpsName);
-    }
-
-    /**
      * Get Traffic information by vpsName for this contractPeriod
      *
      * @param string $vpsName The name of the VPS
-     * @throws ApiException on error
-     * @return array
+     * @throws \Transip\Exception\ApiException on error
+     * @return array The traffic information for this VPS
      */
     public function getTrafficInformationForVps($vpsName)
     {
@@ -257,7 +257,7 @@ class Vps extends SoapClientAbstract
      * Start a Vps
      *
      * @param string $vpsName The vps name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function start($vpsName)
     {
@@ -268,7 +268,7 @@ class Vps extends SoapClientAbstract
      * Stop a Vps
      *
      * @param string $vpsName The vps name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function stop($vpsName)
     {
@@ -279,7 +279,7 @@ class Vps extends SoapClientAbstract
      * Reset a Vps
      *
      * @param string $vpsName The vps name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function reset($vpsName)
     {
@@ -291,7 +291,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The vps name
      * @param string $description The snapshot description
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function createSnapshot($vpsName, $description)
     {
@@ -303,7 +303,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The vps name
      * @param string $snapshotName The snapshot name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function revertSnapshot($vpsName, $snapshotName)
     {
@@ -311,11 +311,24 @@ class Vps extends SoapClientAbstract
     }
 
     /**
+     * Revert a snapshot to another VPS
+     *
+     * @param string $sourceVpsName The name of the VPS where the snapshot is made
+     * @param string $snapshotName The snapshot name
+     * @param string $destinationVpsName The name of the VPS where the snapshot should be reverted to
+     * @throws \Transip\Exception\ApiException on error
+     */
+    public function revertSnapshotToOtherVps($sourceVpsName, $snapshotName, $destinationVpsName)
+    {
+        return $this->getSoapClient(array_merge(array($sourceVpsName, $snapshotName, $destinationVpsName), array('__method' => 'revertSnapshotToOtherVps')))->revertSnapshotToOtherVps($sourceVpsName, $snapshotName, $destinationVpsName);
+    }
+
+    /**
      * Remove a snapshot
      *
      * @param string $vpsName The vps name
      * @param string $snapshotName The snapshot name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function removeSnapshot($vpsName, $snapshotName)
     {
@@ -323,10 +336,22 @@ class Vps extends SoapClientAbstract
     }
 
     /**
+     * Revert a vps backup
+     *
+     * @param string $vpsName The vps name
+     * @param int $vpsBackupId The backup id
+     * @throws \Transip\Exception\ApiException on error
+     */
+    public function revertVpsBackup($vpsName, $vpsBackupId)
+    {
+        return $this->getSoapClient(array_merge(array($vpsName, $vpsBackupId), array('__method' => 'revertVpsBackup')))->revertVpsBackup($vpsName, $vpsBackupId);
+    }
+
+    /**
      * Get a Vps by name
      *
      * @param string $vpsName The vps name
-     * @return |Transip\Model\Vps $vps    The vps objects
+     * @return \Transip\Model\Vps $vps    The vps objects
      */
     public function getVps($vpsName)
     {
@@ -336,7 +361,7 @@ class Vps extends SoapClientAbstract
     /**
      * Get all Vpses
      *
-     * @return |Transip\Model\Vps[] Array of Vps objects
+     * @return \Transip\Model\Vps[] Array of Vps objects
      */
     public function getVpses()
     {
@@ -347,7 +372,7 @@ class Vps extends SoapClientAbstract
      * Get all Snapshots for a vps
      *
      * @param string $vpsName The name of the VPS
-     * @return |Transip\Model\Snapshot[] $snapshotArray Array of snapshot objects
+     * @return \Transip\Model\Snapshot[] $snapshotArray Array of snapshot objects
      */
     public function getSnapshotsByVps($vpsName)
     {
@@ -355,9 +380,20 @@ class Vps extends SoapClientAbstract
     }
 
     /**
+     * Get all VpsBackups for a vps
+     *
+     * @param string $vpsName The name of the VPS
+     * @return \Transip\Model\VpsBackup[] $vpsBackupArray Array of snapshot objects
+     */
+    public function getVpsBackupsByVps($vpsName)
+    {
+        return $this->getSoapClient(array_merge(array($vpsName), array('__method' => 'getVpsBackupsByVps')))->getVpsBackupsByVps($vpsName);
+     }
+
+    /**
      * Get all operating systems
      *
-     * @return |Transip\Model\OperatingSystem[] Array of OperatingSystem objects
+     * @return \Transip\Model\OperatingSystem[] Array of OperatingSystem objects
      */
     public function getOperatingSystems()
     {
@@ -382,7 +418,7 @@ class Vps extends SoapClientAbstract
      * @param string $vpsName The name of the VPS
      * @param string $operatingSystemName The name of the operating to install
      * @param string $base64InstallText base64_encoded preseed/kickstart text
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function installOperatingSystemUnattended($vpsName, $operatingSystemName, $base64InstallText)
     {
@@ -415,7 +451,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The name of the VPS
      * @param string $ipv6Address The Ipv6 Address from your range
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function addIpv6ToVps($vpsName, $ipv6Address)
     {
@@ -427,7 +463,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $ipAddress The IP Address to update (ipv4 or ipv6)
      * @param string $ptrRecord The PTR Record to update to
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function updatePtrRecord($ipAddress, $ptrRecord)
     {
@@ -439,7 +475,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The name of the Vps
      * @param boolean $enabled Enable (true) or Disable (false) the lock
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function setCustomerLock($vpsName, $enabled)
     {
@@ -451,7 +487,7 @@ class Vps extends SoapClientAbstract
      *
      * @param string $vpsName The name of the Vps
      * @param string $targetAccountname the target account name
-     * @throws ApiException on error
+     * @throws \Transip\Exception\ApiException on error
      */
     public function handoverVps($vpsName, $targetAccountname)
     {

@@ -9,7 +9,8 @@ namespace Transip\Api;
  * @class   DomainService
  * @author  TransIP (support@transip.nl)
  * @author  Mitchel Verschoof (mitchel@verschoof.net)
- * @version 20131025 10:01
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Domain extends SoapClientAbstract
 {
@@ -23,10 +24,6 @@ class Domain extends SoapClientAbstract
     const ACTION_REGISTER              = 'register';
     const ACTION_TRANSFER              = 'transfer';
     const ACTION_INTERNALPULL          = 'internalpull';
-
-    /** The SOAP service that corresponds with this class. */
-    protected $service = 'DomainService';
-
 
     /**
      * Gets the singleton SoapClient which is used to connect to the TransIP Api.
@@ -47,6 +44,8 @@ class Domain extends SoapClientAbstract
             'DomainAction'      => 'Transip\\Model\\DomainAction',
         );
 
+        $this->service = 'DomainService';
+
         return $this->soapClient($classMap, $parameters);
     }
 
@@ -54,7 +53,7 @@ class Domain extends SoapClientAbstract
      * Checks the availability of multiple domains.
      *
      * @param string[] $domainNames The domain names to check for availability. A maximum of 20 domainNames at once
-     * @throws ApiException
+     * @throws \Transip\Exception\\Transip\Exception\ApiException
      * @return \Transip\Model\DomainCheckResult[] A list of DomainCheckResult objects, holding the domainName and the status per result.
      */
     public function batchCheckAvailability($domainNames)
@@ -98,7 +97,7 @@ class Domain extends SoapClientAbstract
      * Get information about a domainName.
      *
      * @param string $domainName The domainName to get the information for.
-     * @throws ApiException  If the Domain could not be found.
+     * @throws \Transip\Exception\ApiException  If the Domain could not be found.
      * @return \Transip\Model\Domain A Domain object holding the data for the requested domainName.
      */
     public function getInfo($domainName)
@@ -147,7 +146,7 @@ class Domain extends SoapClientAbstract
      *
      * @param \Transip\Model\Domain $domain The Domain object holding information about the domain that needs to be registered.
      * @requires readwrite mode
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function register(\Transip\Model\Domain $domain)
     {
@@ -161,7 +160,7 @@ class Domain extends SoapClientAbstract
      * @param string $domainName The domainname that needs to be cancelled.
      * @param string $endTime    The time to cancel the domain (Domain::CANCELLATIONTIME_END (end of contract)
      * @requires readwrite mode
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function cancel($domainName, $endTime)
     {
@@ -250,13 +249,11 @@ class Domain extends SoapClientAbstract
 
     /**
      * Starts an owner change of a Domain, brings additional costs with the following TLDs:
-     * .nl
      * .be
-     * .eu
      *
      * @param string                      $domainName             the domainName to change the owner for
      * @param \Transip\Model\WhoisContact $registrantWhoisContact the new contact data for this
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function setOwner($domainName, \Transip\Model\WhoisContact $registrantWhoisContact)
     {
@@ -296,7 +293,7 @@ class Domain extends SoapClientAbstract
      *
      * @param string $tldName The tld to get information about.
      * @example examples/DomainService-DomainService-getAllTldInfos.php
-     * @throws ApiException  If the TLD could not be found.
+     * @throws \Transip\Exception\ApiException  If the TLD could not be found.
      * @return \Transip\Model\Tld Tld object with info about this Tld
      */
     public function getTldInfo($tldName)
@@ -323,7 +320,7 @@ class Domain extends SoapClientAbstract
      *
      * @param \Transip\Model\Domain $domain The domain with data to retry
      * @example examples/DomainService-DomainService-domainActions.php
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function retryCurrentDomainActionWithNewData(\Transip\Model\Domain $domain)
     {
@@ -335,6 +332,7 @@ class Domain extends SoapClientAbstract
      *
      * @param \Transip\Model\Domain $domain      The domain to try the transfer with a different authcode for
      * @param string                $newAuthCode New authorization code to try
+     * @throws \Transip\Exception\ApiException
      */
     public function retryTransferWithDifferentAuthCode(\Transip\Model\Domain $domain, $newAuthCode)
     {
@@ -346,7 +344,7 @@ class Domain extends SoapClientAbstract
      *
      * @param \Transip\Model\Domain $domain the domain to cancel the action for
      * @example examples/DomainService-DomainService-domainActions.php
-     * @throws ApiException
+     * @throws \Transip\Exception\ApiException
      */
     public function cancelDomainAction(\Transip\Model\Domain $domain)
     {

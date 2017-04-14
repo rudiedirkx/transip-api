@@ -8,6 +8,7 @@ namespace Transip\Model;
  * @package Transip
  * @class OperatingSystem
  * @author TransIP (support@transip.nl)
+ * @version 20170413 15:20
  */
 class OperatingSystem
 {
@@ -16,26 +17,26 @@ class OperatingSystem
      *
      * @var string
      */
-    public $name;
+    public $name = '';
 
     /**
      * Description
      *
      * @var string
      */
-    public $description;
+    public $description = '';
 
     /**
      * The snapshot creation date
      *
      * @var string
      */
-    public $dateTimeCreate;
+    public $dateTimeCreate = '';
 
     /**
      * Is a preinstallable image
      *
      * @var boolean
      */
-    public $isPreinstallableImage;
+    public $isPreinstallableImage = false;
 }

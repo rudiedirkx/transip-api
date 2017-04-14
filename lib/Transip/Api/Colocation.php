@@ -9,13 +9,11 @@ namespace Transip\Api;
  * @class   ColocationService
  * @author  TransIP (support@transip.nl)
  * @author  Mitchel Verschoof (mitchel@verschoof.net)
- * @version 20131025 10:01
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Colocation extends SoapClientAbstract
 {
-    /** The SOAP service that corresponds with this class. */
-    protected $service = 'ColocationService';
-
 
     /**
      * Gets the singleton SoapClient which is used to connect to the TransIP Api.
@@ -28,6 +26,9 @@ class Colocation extends SoapClientAbstract
         $classMap = array(
             'DataCenterVisitor' => 'Transip\\Model\\DataCenterVisitor',
         );
+
+
+        $this->service = 'ColocationService';
 
         return $this->soapClient($classMap, $parameters);
     }

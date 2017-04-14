@@ -2,7 +2,7 @@
 
 namespace Transip\Api;
 
-use Transip\Client as Client;
+use Transip\Client;
 
 /**
  * This is the base of all the Services
@@ -11,18 +11,22 @@ use Transip\Client as Client;
  * @class   SoapClientAbstract
  * @author  TransIP (support@transip.nl)
  * @author  Mitchel Verschoof (mitchel@verschoof.net)
- * @version 20131025 10:01
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 abstract class SoapClientAbstract
 {
     /** The API version. */
-    protected $apiVersion = '4.2';
+    protected $apiVersion = '5.4';
 
     /** @var \SoapClient  The SoapClient used to perform the SOAP calls. */
     protected $soapClient = null;
 
     /** The client class */
     protected $client;
+
+    /** The SOAP service that corresponds with this class. */
+    protected $service;
 
     public function __construct(Client $client)
     {

@@ -16,89 +16,96 @@ class Vps
      *
      * @var string
      */
-    public $name;
+    public $name = '';
 
     /**
      * The Vps description
      *
      * @var string
      */
-    public $description;
+    public $description = '';
 
     /**
      * The Vps OperatingSystem
      *
      * @var string
      */
-    public $operatingSystem;
+    public $operatingSystem = '';
 
     /**
      * The Vps disk size
      *
      * @var string
      */
-    public $diskSize;
+    public $diskSize = '';
 
     /**
      * The Vps memory size
      *
      * @var string
      */
-    public $memorySize;
+    public $memorySize = '';
 
     /**
      * The Vps cpu count
      *
      * @var string
      */
-    public $cpus;
+    public $cpus = '';
 
     /**
      * The Vps status
      *
      * @var string
      */
-    public $status;
+    public $status = '';
 
     /**
      * The Vps main ipAddress
      *
      * @var string
      */
-    public $ipAddress;
+    public $ipAddress = '';
 
+    /**
+     * The Vps MacAddress
+     *
+     * @var string
+     */
+    public $macAddress = '';
+    
     /**
      * The Vps VNC hostname
      *
      * @var string
      */
-    public $vncHostname;
+    public $vncHostname = '';
 
     /**
      * The Vps VNC port (uses SSL)
      *
      * @var string
      */
-    public $vncPortNumber;
+    public $vncPortNumber = '';
 
     /**
      * The Vps VNC password
      *
      * @var string
      */
-    public $vncPassword;
+    public $vncPassword = '';
 
     /**
      * If the vps is blocked
      *
-     * @var string
+     * @var boolean
      */
-    public $isBlocked;
+    public $isBlocked = false;
 
     /**
      * If this vps is customer locked
      *
      * @var boolean
      */
-    public $isCustomerLocked;
+    public $isCustomerLocked = false;
 }

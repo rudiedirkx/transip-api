@@ -9,16 +9,13 @@ namespace Transip\Api;
  * @class   ForwardService
  * @author  TransIP (support@transip.nl)
  * @author  Mitchel Verschoof (mitchel@verschoof.net)
- * @version 20131025 10:01
+ * @author  Sander Krul (sander@dope-e.nl)
+ * @version 20170413 15:20
  */
 class Forward extends SoapClientAbstract
 {
     const CANCELLATIONTIME_END         = 'end';
     const CANCELLATIONTIME_IMMEDIATELY = 'immediately';
-
-    /** The SOAP service that corresponds with this class. */
-    protected $service = 'ForwardService';
-
 
     /**
      * Gets the singleton SoapClient which is used to connect to the TransIP Api.
@@ -31,6 +28,8 @@ class Forward extends SoapClientAbstract
         $classMap = array(
             'Forward' => 'Transip\\Model\\Forward',
         );
+
+        $this->service = 'ForwardService';
 
         return $this->soapClient($classMap, $parameters);
     }
