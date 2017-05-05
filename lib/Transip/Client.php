@@ -39,11 +39,11 @@ class Client
      * TransIP API endpoint to connect to.
      *
      * e.g.:
-     *      'api.transip.nl'
-     *      'api.transip.be'
-     *      'api.transip.eu'
+     *      'https://api.transip.nl'
+     *      'https://api.transip.be'
+     *      'https://api.transip.eu'
      */
-    protected $endpoint = 'api.transip.nl';
+    protected $endpoint = 'https://api.transip.nl';
 
     /**
      * Your login name on the TransIP website.
@@ -61,7 +61,7 @@ class Client
      * @param bool   $debug
      * @param string $endpoint
      */
-    public function __construct($login, $privateKey, $debug = false, $endpoint = 'api.transip.nl')
+    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl')
     {
         $this->login      = $login;
         $this->privateKey = $privateKey;

@@ -66,7 +66,7 @@ abstract class SoapClientAbstract
                 'trace'    => false, // can be used for debugging
             );
 
-            $wsdlUri = "https://{$endpoint}/wsdl/?service=" . $this->service;
+            $wsdlUri = $endpoint . '/wsdl/?service=' . $this->service;
             try {
                 $this->soapClient = new \SoapClient($wsdlUri, $options);
             } catch (\SoapFault $sf) {
