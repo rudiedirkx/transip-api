@@ -46,9 +46,9 @@ class Client
     protected $endpoint = 'api.transip.nl';
 
     /**
-     * @var string
+     * @var null|string
      */
-    protected $protocol = 'https://';
+    protected $proxy;
 
     /**
      * Your login name on the TransIP website.
@@ -65,14 +65,14 @@ class Client
      * @param string $privateKey
      * @param bool   $debug
      * @param string $endpoint
-     * @param string $protocol
+     * @param string $proxy
      */
-    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl', $protocol = 'https//')
+    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl', $proxy = null)
     {
         $this->login      = $login;
         $this->privateKey = $privateKey;
         $this->endpoint   = $endpoint;
-        $this->protocol   = $protocol;
+        $this->proxy   = $proxy;
 
         if ($debug) {
             $this->mode = 'readonly';
@@ -128,20 +128,20 @@ class Client
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getProtocol()
+    public function getProxy()
     {
-        return $this->protocol;
+        return $this->proxy;
     }
 
     /**
-     * @param string $protocol
+     * @param string $proxy
      * @return Client
      */
-    public function setProtocol($protocol)
+    public function setProxy($proxy)
     {
-        $this->protocol = $protocol;
+        $this->proxy = $proxy;
 
         return $this;
     }

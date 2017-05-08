@@ -44,7 +44,7 @@ abstract class SoapClientAbstract
     protected function soapClient(array $classMap, $parameters = array())
     {
         $endpoint = $this->client->getEndpoint();
-        $protocol = $this->client->getProtocol();
+        $proxy = $this->client->getProxy();
 
         if ($this->soapClient === null) {
             $extensions = get_loaded_extensions();
@@ -67,7 +67,12 @@ abstract class SoapClientAbstract
                 'trace'    => false, // can be used for debugging
             );
 
-            $wsdlUri = $protocol . $endpoint . '/wsdl/?service=' . $this->service;
+            $wsdlUri = 'https://' . $endpoint . '/wsdl/?service=' . $this->service;
+
+            if ($proxy) {
+                $wsdlUri = $proxy . '/wsdl/?service=' . $this->service;
+            }
+
             try {
                 $this->soapClient = new \SoapClient($wsdlUri, $options);
             } catch (\SoapFault $sf) {
