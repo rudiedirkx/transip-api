@@ -70,7 +70,7 @@ abstract class SoapClientAbstract
             $wsdlUri = 'https://' . $endpoint . '/wsdl/?service=' . $this->service;
 
             if ($proxy) {
-                $wsdlUri = $proxy . '/wsdl/?service=' . $this->service;
+                $wsdlUri = '/wsdl/transip-api-' . $this->service;
             }
 
             try {

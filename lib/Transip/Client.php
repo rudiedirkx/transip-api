@@ -46,7 +46,7 @@ class Client
     protected $endpoint = 'api.transip.nl';
 
     /**
-     * @var null|string
+     * @var bool
      */
     protected $proxy;
 
@@ -65,9 +65,9 @@ class Client
      * @param string $privateKey
      * @param bool   $debug
      * @param string $endpoint
-     * @param string $proxy
+     * @param bool   $proxy
      */
-    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl', $proxy = null)
+    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl', $proxy = false)
     {
         $this->login      = $login;
         $this->privateKey = $privateKey;
