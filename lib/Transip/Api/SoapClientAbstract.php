@@ -44,6 +44,7 @@ abstract class SoapClientAbstract
     protected function soapClient(array $classMap, $parameters = array())
     {
         $endpoint = $this->client->getEndpoint();
+        $protocol = $this->client->getProtocol();
 
         if ($this->soapClient === null) {
             $extensions = get_loaded_extensions();
@@ -66,7 +67,7 @@ abstract class SoapClientAbstract
                 'trace'    => false, // can be used for debugging
             );
 
-            $wsdlUri = $endpoint . '/wsdl/?service=' . $this->service;
+            $wsdlUri = $protocol . $endpoint . '/wsdl/?service=' . $this->service;
             try {
                 $this->soapClient = new \SoapClient($wsdlUri, $options);
             } catch (\SoapFault $sf) {
