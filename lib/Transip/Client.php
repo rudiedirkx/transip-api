@@ -67,7 +67,7 @@ class Client
      * @param string $endpoint
      * @param bool   $proxy
      */
-    public function __construct($login, $privateKey, $debug = false, $endpoint = 'https://api.transip.nl', $proxy = false)
+    public function __construct($login, $privateKey, $debug = false, $endpoint = 'api.transip.nl', $proxy = false)
     {
         $this->login      = $login;
         $this->privateKey = $privateKey;
